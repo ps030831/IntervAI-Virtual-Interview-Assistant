@@ -1,0 +1,73 @@
+/* technicalquiz.css */
+
+.quiz-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+    color: #333;
+}
+
+h2 {
+    text-align: center;
+    color: #555;
+}
+
+.question-card {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+}
+
+.question-card p {
+    font-weight: bold;
+    margin: 0 0 10px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    cursor: pointer;
+}
+
+input[type="radio"] {
+    margin-right: 10px;
+}
+
+.submit-button, .proceed-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-top: 20px;
+}
+
+.submit-button:hover, .proceed-button:hover {
+    background-color: #0056b3;
+}
+
+.submit-button:disabled, .proceed-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.score-message {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+}
