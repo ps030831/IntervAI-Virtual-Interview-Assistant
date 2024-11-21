@@ -2,116 +2,7 @@
 
 // import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
-// import { useNavigate } from 'react-router-dom'; // Import useNavigate for routing
-// import './aptitudequiz.css'; // Import the CSS file
-
-// const AptitudeQuiz = () => {
-//     const [questions, setQuestions] = useState([]);
-//     const [answers, setAnswers] = useState({});
-//     const [score, setScore] = useState(null); // State for score
-//     const [isSubmitted, setIsSubmitted] = useState(false); // Track if submitted
-//     const navigate = useNavigate(); // Initialize navigate
-
-//     useEffect(() => {
-//         axios.get('http://127.0.0.1:5000/api/aptitude') // Update the URL to match your backend
-//             .then(res => {
-//                 console.log(res.data); // Log the response
-//                 setQuestions(res.data);
-//             })
-//             .catch(err => {
-//                 console.error(err); // Log any errors
-//                 alert('Error fetching questions.'); // Alert user
-//             });
-//     }, []);
-
-//     const handleAnswerChange = (qIndex, answer) => {
-//         setAnswers(prevAnswers => ({
-//             ...prevAnswers,
-//             [qIndex]: answer
-//         }));
-//     };
-
-//     const handleSubmit = () => {
-//         if (Object.keys(answers).length === 0) {
-//             alert("Please select at least one answer before submitting.");
-//             return;
-//         }
-
-//         axios.post('http://127.0.0.1:5000/api/submit/aptitude', answers)
-//             .then(res => {
-//                 setScore(res.data.score);
-//                 setIsSubmitted(true);
-//             })
-//             .catch(err => console.error(err));
-//     };
-
-//     const handleProceed = () => {
-//         alert("Proceeding to the Technical Round...");
-//         navigate('/technical'); // Redirect to the Technical Round route
-//     };
-
-//     return (
-//         <div className="quiz-container">
-//             <h1>Welcome to the Interview Bot</h1>
-//             <h2>Aptitude Round</h2>
-//             {questions.length > 0 ? (
-//                 questions.map((q, index) => (
-//                     <div key={index} className="question-card">
-//                         <p>{q.question}</p>
-//                         {q.options.map((option, i) => (
-//                             <label key={i}>
-//                                 <input
-//                                     type="radio"
-//                                     name={`question-${index}`}
-//                                     value={option}
-//                                     onChange={() => handleAnswerChange(index, option)}
-//                                     disabled={isSubmitted} // Disable radio buttons if submitted
-//                                 />
-//                                 {option}
-//                             </label>
-//                         ))}
-//                     </div>
-//                 ))
-//             ) : (
-//                 <p>Loading questions...</p>
-//             )}
-//             <button className="submit-button" onClick={handleSubmit} disabled={isSubmitted}>Submit</button>
-//             {score !== null && (
-//                 <p>
-//                     You have scored {score}%. You are {score >= 70 ? "applicable" : "not applicable"} for the next round.
-//                 </p>
-//             )}
-//             {score >= 70 && isSubmitted && (
-//                 <button className="proceed-button" onClick={handleProceed}>Proceed to Next Round</button>
-//             )}
-//         </div>
-//     );
-// };
-
-// export default AptitudeQuiz;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// import React, { useState, useEffect } from 'react';
-// import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
+// import { useNavigate, useSearchParams } from 'react-router-dom';
 // import './aptitudequiz.css';
 
 // const AptitudeQuiz = () => {
@@ -122,12 +13,15 @@
 //     const [isLoading, setIsLoading] = useState(true);
 //     const [error, setError] = useState(null);
 //     const navigate = useNavigate();
+//     const [searchParams, setSearchParams] = useSearchParams();
+//     const user_id = searchParams.get('user_id');
 
+//     // Fetch questions from the server
 //     useEffect(() => {
 //         const fetchQuestions = async () => {
 //             try {
 //                 setIsLoading(true);
-//                 const res = await axios.get('http://127.0.0.1:5000/api/aptitude');
+//                 const res = await axios.get('http://127.0.0.1:8080/api/aptitude');
 //                 if (res.data && Array.isArray(res.data) && res.data.length > 0) {
 //                     setQuestions(res.data);
 //                 } else {
@@ -144,21 +38,23 @@
 //         fetchQuestions();
 //     }, []);
 
+//     // Handle the answer selection
 //     const handleAnswerChange = (qIndex, answer) => {
 //         setAnswers(prevAnswers => ({
 //             ...prevAnswers,
-//             [qIndex]: answer
+//             [qIndex]: answer  // Associate each question index with the selected answer
 //         }));
 //     };
 
+//     // Submit answers to the server
 //     const handleSubmit = async () => {
-//         if (Object.keys(answers).length === 0) {
-//             alert("Please select at least one answer before submitting.");
+//         if (Object.keys(answers).length !== questions.length) {
+//             alert("Please answer all questions before submitting.");
 //             return;
 //         }
 
 //         try {
-//             const res = await axios.post('http://127.0.0.1:5000/api/submit/aptitude', answers);
+//             const res = await axios.post('http://127.0.0.1:8080/api/submit/aptitude', {answers, user_id});
 //             setScore(res.data.score);
 //             setIsSubmitted(true);
 //         } catch (err) {
@@ -167,24 +63,29 @@
 //         }
 //     };
 
-//     const handleProceed = () => {
-//         navigate('/technical');
-//     };
 
+
+//   const handleProceed = () => {
+//     const userid= localStorage.getItem("userid")
+//     navigate(`/technical?user_id=${userid}`);
+// };
+
+//     // Loading state
 //     if (isLoading) {
 //         return (
 //             <div className="quiz-container">
-//                 <h1>Welcome to the Interview Bot</h1>
+//                 <h1>Round 2</h1>
 //                 <h2>Aptitude Round</h2>
 //                 <p>Loading questions...</p>
 //             </div>
 //         );
 //     }
 
+//     // Error state
 //     if (error) {
 //         return (
 //             <div className="quiz-container">
-//                 <h1>Welcome to the Interview Bot</h1>
+//                 <h1>Round 2</h1>
 //                 <h2>Aptitude Round</h2>
 //                 <p className="error-message">{error}</p>
 //                 <button onClick={() => window.location.reload()}>Retry</button>
@@ -194,7 +95,7 @@
 
 //     return (
 //         <div className="quiz-container">
-//             <h1>Welcome to the Interview Bot</h1>
+//             <h1>Round 2</h1>
 //             <h2>Aptitude Round</h2>
 //             {questions.map((q, index) => (
 //                 <div key={index} className="question-card">
@@ -204,7 +105,7 @@
 //                             <label key={i} className="option-label">
 //                                 <input
 //                                     type="radio"
-//                                     name={`question-${index}`}
+//                                     name={`question-${index}`}  // Unique name for each question to allow independent selection
 //                                     value={option}
 //                                     onChange={() => handleAnswerChange(index, option)}
 //                                     disabled={isSubmitted}
@@ -220,7 +121,7 @@
 //             <button 
 //                 className="submit-button" 
 //                 onClick={handleSubmit} 
-//                 disabled={isSubmitted || Object.keys(answers).length === 0}
+//                 disabled={isSubmitted || Object.keys(answers).length !== questions.length}  // Disable if not all questions answered
 //             >
 //                 Submit
 //             </button>
@@ -247,19 +148,9 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
 // import React, { useState, useEffect } from 'react';
 // import axios from 'axios';
-// import { useNavigate } from 'react-router-dom';
+// import { useNavigate, useSearchParams } from 'react-router-dom';
 // import './aptitudequiz.css';
 
 // const AptitudeQuiz = () => {
@@ -269,13 +160,17 @@
 //     const [isSubmitted, setIsSubmitted] = useState(false);
 //     const [isLoading, setIsLoading] = useState(true);
 //     const [error, setError] = useState(null);
+//     const [timeLeft, setTimeLeft] = useState(600);  // 10 minutes timer
 //     const navigate = useNavigate();
+//     const [searchParams] = useSearchParams();
+//     const user_id = searchParams.get('user_id');
 
+//     // Fetch questions from the server
 //     useEffect(() => {
 //         const fetchQuestions = async () => {
 //             try {
 //                 setIsLoading(true);
-//                 const res = await axios.get('http://127.0.0.1:5000/api/aptitude');
+//                 const res = await axios.get('http://127.0.0.1:8080/api/aptitude');
 //                 if (res.data && Array.isArray(res.data) && res.data.length > 0) {
 //                     setQuestions(res.data);
 //                 } else {
@@ -292,21 +187,37 @@
 //         fetchQuestions();
 //     }, []);
 
+//     // Timer countdown
+//     useEffect(() => {
+//         let timer;
+//         if (timeLeft > 0 && !isSubmitted) {
+//             timer = setInterval(() => {
+//                 setTimeLeft(prev => prev - 1);  // Decrease by 1 every second
+//             }, 1000);
+//         } else if (timeLeft === 0 && !isSubmitted) {
+//             handleSubmit();  // Automatically submit when time runs out
+//         }
+//         return () => clearInterval(timer);
+//     }, [timeLeft, isSubmitted]);
+
+//     // Handle the answer selection
 //     const handleAnswerChange = (qIndex, answer) => {
 //         setAnswers(prevAnswers => ({
 //             ...prevAnswers,
-//             [qIndex]: answer
+//             [qIndex]: answer  // Associate each question index with the selected answer
 //         }));
 //     };
 
+//     // Submit answers to the server
 //     const handleSubmit = async () => {
-//         if (Object.keys(answers).length === 0) {
-//             alert("Please select at least one answer before submitting.");
-//             return;
+//         if (Object.keys(answers).length !== questions.length) {
+//             // This logic is removed so that it doesn't show alert if answers are missing
+//             //alert("Please answer all questions before submitting.");
+//             setAnswers(answers); // Submit the answers even if some are missing.
 //         }
 
 //         try {
-//             const res = await axios.post('http://127.0.0.1:5000/api/submit/aptitude', answers);
+//             const res = await axios.post('http://127.0.0.1:8080/api/submit/aptitude', { answers, user_id });
 //             setScore(res.data.score);
 //             setIsSubmitted(true);
 //         } catch (err) {
@@ -315,24 +226,28 @@
 //         }
 //     };
 
+//     // Proceed to the next round
 //     const handleProceed = () => {
-//         navigate('/technical');
+//         const userid = localStorage.getItem("userid");
+//         navigate(`/technical?user_id=${userid}`);
 //     };
 
+//     // Loading state
 //     if (isLoading) {
 //         return (
 //             <div className="quiz-container">
-//                 <h1>Welcome to the Interview Bot</h1>
+//                 <h1>Round 2</h1>
 //                 <h2>Aptitude Round</h2>
 //                 <p>Loading questions...</p>
 //             </div>
 //         );
 //     }
 
+//     // Error state
 //     if (error) {
 //         return (
 //             <div className="quiz-container">
-//                 <h1>Welcome to the Interview Bot</h1>
+//                 <h1>Round 2</h1>
 //                 <h2>Aptitude Round</h2>
 //                 <p className="error-message">{error}</p>
 //                 <button onClick={() => window.location.reload()}>Retry</button>
@@ -342,8 +257,14 @@
 
 //     return (
 //         <div className="quiz-container">
-//             <h1>Welcome to the Interview Bot</h1>
+//             <h1>Round 2</h1>
 //             <h2>Aptitude Round</h2>
+            
+//             {/* Timer display */}
+//             <div className="timer-container">
+//                 <p>Time Left: {Math.max(timeLeft, 0)} seconds</p>  {/* Display remaining time */}
+//             </div>
+
 //             {questions.map((q, index) => (
 //                 <div key={index} className="question-card">
 //                     <p className="question-text">{q.question}</p>
@@ -352,7 +273,7 @@
 //                             <label key={i} className="option-label">
 //                                 <input
 //                                     type="radio"
-//                                     name={`question-${index}`}
+//                                     name={`question-${index}`}  // Unique name for each question to allow independent selection
 //                                     value={option}
 //                                     onChange={() => handleAnswerChange(index, option)}
 //                                     disabled={isSubmitted}
@@ -365,14 +286,14 @@
 //                 </div>
 //             ))}
             
-//             <button 
-//                 className="submit-button" 
-//                 onClick={handleSubmit} 
-//                 disabled={isSubmitted || Object.keys(answers).length === 0}
+//             <button
+//                 className="submit-button"
+//                 onClick={handleSubmit}
+//                 disabled={isSubmitted || Object.keys(answers).length !== questions.length}  // Disable if not all questions answered
 //             >
 //                 Submit
 //             </button>
-            
+
 //             {score !== null && (
 //                 <div className="result-container">
 //                     <p className="score-text">
@@ -392,12 +313,15 @@
 // };
 
 // export default AptitudeQuiz;
+
+
+
 
 
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import './aptitudequiz.css';
 
 const AptitudeQuiz = () => {
@@ -407,14 +331,17 @@ const AptitudeQuiz = () => {
     const [isSubmitted, setIsSubmitted] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [timeLeft, setTimeLeft] = useState(600);  // 10 minutes timer
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const user_id = searchParams.get('user_id');
 
     // Fetch questions from the server
     useEffect(() => {
         const fetchQuestions = async () => {
             try {
                 setIsLoading(true);
-                const res = await axios.get('http://127.0.0.1:5000/api/aptitude');
+                const res = await axios.get('http://127.0.0.1:8080/api/aptitude');
                 if (res.data && Array.isArray(res.data) && res.data.length > 0) {
                     setQuestions(res.data);
                 } else {
@@ -431,6 +358,19 @@ const AptitudeQuiz = () => {
         fetchQuestions();
     }, []);
 
+    // Timer countdown
+    useEffect(() => {
+        let timer;
+        if (timeLeft > 0 && !isSubmitted) {
+            timer = setInterval(() => {
+                setTimeLeft(prev => prev - 1);  // Decrease by 1 every second
+            }, 1000);
+        } else if (timeLeft === 0 && !isSubmitted) {
+            handleSubmit();  // Automatically submit when time runs out
+        }
+        return () => clearInterval(timer);
+    }, [timeLeft, isSubmitted]);
+
     // Handle the answer selection
     const handleAnswerChange = (qIndex, answer) => {
         setAnswers(prevAnswers => ({
@@ -442,12 +382,13 @@ const AptitudeQuiz = () => {
     // Submit answers to the server
     const handleSubmit = async () => {
         if (Object.keys(answers).length !== questions.length) {
-            alert("Please answer all questions before submitting.");
-            return;
+            // This logic is removed so that it doesn't show alert if answers are missing
+            //alert("Please answer all questions before submitting.");
+            setAnswers(answers); // Submit the answers even if some are missing.
         }
 
         try {
-            const res = await axios.post('http://127.0.0.1:5000/api/submit/aptitude', answers);
+            const res = await axios.post('http://127.0.0.1:8080/api/submit/aptitude', { answers, user_id });
             setScore(res.data.score);
             setIsSubmitted(true);
         } catch (err) {
@@ -456,16 +397,24 @@ const AptitudeQuiz = () => {
         }
     };
 
-    // Handle the proceed action to the next round
+    // Proceed to the next round
     const handleProceed = () => {
-        navigate('/technical');
+        const userid = localStorage.getItem("userid");
+        navigate(`/technical?user_id=${userid}`);
+    };
+
+    // Timer formatted as MM:SS
+    const formatTime = (time) => {
+        const minutes = Math.floor(time / 60);
+        const seconds = time % 60;
+        return `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
     };
 
     // Loading state
     if (isLoading) {
         return (
             <div className="quiz-container">
-                <h1>Welcome to the Interview Bot</h1>
+                <h1>Round 2</h1>
                 <h2>Aptitude Round</h2>
                 <p>Loading questions...</p>
             </div>
@@ -476,7 +425,7 @@ const AptitudeQuiz = () => {
     if (error) {
         return (
             <div className="quiz-container">
-                <h1>Welcome to the Interview Bot</h1>
+                <h1>Round 2</h1>
                 <h2>Aptitude Round</h2>
                 <p className="error-message">{error}</p>
                 <button onClick={() => window.location.reload()}>Retry</button>
@@ -486,8 +435,14 @@ const AptitudeQuiz = () => {
 
     return (
         <div className="quiz-container">
-            <h1>Welcome to the Interview Bot</h1>
+            <h1>Round 2</h1>
             <h2>Aptitude Round</h2>
+            
+            {/* Timer display */}
+            <div className="timer-container">
+                <p>Time Left: {formatTime(timeLeft)}</p>  {/* Display formatted timer */}
+            </div>
+
             {questions.map((q, index) => (
                 <div key={index} className="question-card">
                     <p className="question-text">{q.question}</p>
@@ -509,14 +464,14 @@ const AptitudeQuiz = () => {
                 </div>
             ))}
             
-            <button 
-                className="submit-button" 
-                onClick={handleSubmit} 
+            <button
+                className="submit-button"
+                onClick={handleSubmit}
                 disabled={isSubmitted || Object.keys(answers).length !== questions.length}  // Disable if not all questions answered
             >
                 Submit
             </button>
-            
+
             {score !== null && (
                 <div className="result-container">
                     <p className="score-text">

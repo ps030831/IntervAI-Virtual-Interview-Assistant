@@ -1,4 +1,4 @@
-/* AptitudeQuiz.css */
+/* AptitudeQuiz.css
 .quiz-container {
     max-width: 600px;
     margin: 0 auto;
@@ -47,4 +47,117 @@ label {
 
 .submit-button:hover {
     background-color: #45a049;
+} */
+
+.quiz-container {
+    max-width: 600px;
+    margin: 100px 0;
+    padding: 40px;
+    background: linear-gradient(to bottom, #4C3B5C, #2A1F3D);
+    box-shadow: 0px 12px 24px rgba(0, 0, 0, 0.5)!important;
+    border-radius: 16px;
+    border: 3px solid #FEC5BB !important;
+    color: #F1DEEE;
+    animation: fadeIn 1s ease-in-out;
+  }
+  
+  /* Heading styling */
+  .quiz-container h1 {
+    font-size: 36px;
+    color: #FEC5BB;
+    margin-bottom: 24px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    text-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Subheading styling */
+  .quiz-container h2 {
+    text-align: center;
+    color: #F1DEEE;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Question card styling */
+  .question-card {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #FEC5BB;
+    border-radius: 8px;
+    background-color: #2A1F3D; /* Dark background to match Round 1 */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Same shadow style as Round 1 */
+    color: #000000;
+  }
+  
+  /* Label styling */
+  label {
+    display: block;
+    margin: 10px 0 5px 0;
+    color: #000000;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  /* Button styling */
+.submit-button {
+    padding: 14px 28px;
+    margin: 18px auto; /* Change margin to auto to center the button */
+    font-size: 18px;
+    color: #121212;
+    background-color: #4C3B5C !important; /* Added !important to ensure it overrides other styles */
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4);
+    font-family: 'Poppins', sans-serif;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    display: block; /* Ensure button is displayed as a block element */
+    width: fit-content; /* Ensure the button doesn't stretch across the container */
 }
+.proceed-button {
+    padding: 14px 28px;
+    margin: 18px auto; /* Change margin to auto to center the button */
+    font-size: 18px;
+    color: #121212;
+    background-color: #4C3B5C !important; /* Added !important to ensure it overrides other styles */
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.4);
+    font-family: 'Poppins', sans-serif;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+    display: block; /* Ensure button is displayed as a block element */
+    width: fit-content; /* Ensure the button doesn't stretch across the container */
+}
+  
+  /* Button hover effect */
+  .submit-button:hover {
+    background-color: #E6A8A1 !important; /* Added !important for hover color */
+    transform: scale(1.05);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Button hover effect */
+  .proceed-button:hover {
+    background-color: #E6A8A1 !important; /* Added !important for hover color */
+    transform: scale(1.05);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.5);
+  }
+  
+  /* Error message styling */
+  .quiz-container .error-message {
+    color: #FF4D4D;
+    font-size: 16px;
+    margin-top: 12px;
+    text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Fancy fade-in effect */
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: translateY(20px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
